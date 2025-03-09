@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Estimator</title>
+    <style>
+        body {
+            font-family: Georgia, serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #CAE7DF;
+            flex-direction: column;
+            text-align: center;
+        }
+        .title {
+            font-family: Georgia, serif;
+            font-size: 30px;
+            margin-bottom: 20px;
+            position: absolute;
+            top: 50px;
+        }
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            width: 350px;
+        }
+        input, button {
+            display: block;
+            width: calc(100% - 20px);
+            padding: 10px;
+            margin: 10px auto;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-family: Georgia, serif;
+        }
+        button {
+            background-color: #007BFF;
+            color: white;
+            cursor: pointer;
+            border: none;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        .error {
+            color: red;
+        }
+    </style>
+</head>
+<body>
+    <div class="title">Car Value Estimator</div>
+
+    <div class="container" id="accountQuestion">
+        <h2>Do you have an account?</h2>
+        <button onclick="showLogin()">Yes</button>
+        <button onclick="showRegister()">No</button>
+    </div>
+
+    <!-- Registration Form -->
+    <div class="container" id="registerForm" style="display: none;">
+        <h2>Create an Account</h2>
+        <input type="email" id="regEmail" placeholder="Email Address" required>
+        <input type="password" id="regPassword" placeholder="Password" required>
+        <input type="password" id="regConfirmPassword" placeholder="Confirm Password" required>
+        <button onclick="register()">Create Account</button>
+        <button onclick="goBack()">Go Back</button>
+        <p class="error" id="regError"></p>
+    </div>
+
+    <!-- Login Form -->
+    <div class="container" id="loginForm" style="display: none;">
+        <h2>Sign In</h2>
+        <input type="email" id="loginEmail" placeholder="Email Address" required>
+        <input type="password" id="loginPassword" placeholder="Password" required>
+        <button onclick="login()">Sign In</button>
+        <button onclick="goBack()">Go Back</button>
+        <p class="error" id="loginError"></p>
+    </div>
+
+    <script>
+        let users = {}; // Object to store registered users
+
+        function showRegister() {
+            document.getElementById("accountQuestion").style.display = "none";
+            document.getElementById("registerForm").style.display = "block";
+        }
+
+        function showLogin() {
+            document.getElementById("accountQuestion").style.display = "none";
+            document.getElementById("loginForm").style.display = "block";
+        }
+
+        function goBack() {
+            document.getElementById("registerForm").style.display = "none";
+            document.getElementById("loginForm").style.display = "none";
+            document.getElementById("accountQuestion").style.display = "block";
+        }
+
+        function register() {
+            let email = document.getElementById("regEmail").value;
+            let password = document.getElementById("regPassword").value;
+            let confirmPassword = document.getElementById("regConfirmPassword").value;
+            let errorMsg = document.getElementById("regError");
+
+            if (password !== confirmPassword) {
+                errorMsg.textContent = "Passwords do not match!";
+                return;
+            }
+
+            if (users[email]) {
+                errorMsg.textContent = "An account with this email already exists!";
+                return;
+            }
+
+            users[email] = password;
+            alert("Account created successfully! You can now log in.");
+            document.getElementById("registerForm").style.display = "none";
+            document.getElementById("loginForm").style.display = "block";
+        }
+
+        function login() {
+            let email = document.getElementById("loginEmail").value;
+            let password = document.getElementById("loginPassword").value;
+            let errorMsg = document.getElementById("loginError");
+
+            if (users[email] && users[email] === password) {
+                alert("Login successful!");
+            } else {
+                errorMsg.textContent = "Email and/or password is incorrect";
+            }
+        }
+    </script>
+</body>
+</html>
